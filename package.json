@@ -1,0 +1,23 @@
+{
+  "name": "ping-nodejs",
+  "version": "1.0.0",
+  "description": "",
+  "type":"module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dlitsman/ping-nodejs.git"
+  },
+  "author": "Dmitry Litsman",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dlitsman/ping-nodejs/issues"
+  },
+  "homepage": "https://github.com/dlitsman/ping-nodejs#readme",
+  "dependencies": {
+    "raw-socket": "^1.7.0"
+  }
+}
