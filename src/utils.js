@@ -1,6 +1,5 @@
 import { Buffer } from "node:buffer";
 import raw from "raw-socket";
-import { hrtime } from "node:process";
 
 const ICMP_HEADER_SIZE = 8;
 
