@@ -2,6 +2,7 @@ import { Buffer } from "node:buffer";
 import raw from "raw-socket";
 
 const ICMP_HEADER_SIZE = 8;
+export const DATE_HEADER_SIZE = 8;
 
 /**
  * Human readable definition of ping protocol
@@ -18,15 +19,25 @@ const ICMP_HEADER_SIZE = 8;
  */
 
 /**
+ * Return number of bytes of IP header
+ *
+ * @param {Buffer} buffer
+ * @returns {number}
+ */
+export function getIPProtocolHeaderSize(buffer) {
+  // Since we get full IP buffer we need to skip IP Header and move to ICMP header
+  // IP Header is located in bits 4-7 https://en.wikipedia.org/wiki/Internet_Protocol_version_4#IHL
+  return (buffer.readInt8() & 0x0f) * 4;
+}
+
+/**
  * Convert buffer to debug object
  *
  * @param {Buffer} buffer
  * @returns {PingProtocol}
  */
 export function toProtocolObject(buffer) {
-  // Since we get full IP buffer we need to skip IP Header and move to ICMP header
-  // IP Header is located in bits 4-7 https://en.wikipedia.org/wiki/Internet_Protocol_version_4#IHL
-  const ipOffset = (buffer.readInt8() & 0x0f) * 4;
+  const ipOffset = getIPProtocolHeaderSize(buffer);
 
   // IP level TTL
   const ttl = buffer.readUInt8(8);
@@ -67,7 +78,7 @@ export function toProtocolObject(buffer) {
  */
 export function createPingBuffer(identifier, sequenceNumber, payload) {
   const buffer = Buffer.alloc(
-    ICMP_HEADER_SIZE + 8 + Buffer.byteLength(payload)
+    ICMP_HEADER_SIZE + DATE_HEADER_SIZE + Buffer.byteLength(payload)
   );
 
   buffer.writeUInt8(8, 0);
