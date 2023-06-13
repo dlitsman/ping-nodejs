@@ -27,7 +27,9 @@ export const DATE_HEADER_SIZE = 8;
 export function getIPProtocolHeaderSize(buffer) {
   // Since we get full IP buffer we need to skip IP Header and move to ICMP header
   // IP Header is located in bits 4-7 https://en.wikipedia.org/wiki/Internet_Protocol_version_4#IHL
-  return (buffer.readInt8() & 0x0f) * 4;
+  const versionAndIHL = buffer.readInt8();
+  const IHL = versionAndIHL & 0b00001111;
+  return IHL * 4; // multiply by 4 as it contains number of 32-bit (4 bytes) words
 }
 
 /**
