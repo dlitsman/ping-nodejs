@@ -25,7 +25,7 @@ let currentSequence = 0;
 
 socket.on("message", function (buffer, source) {
   const pingObject = toProtocolObject(buffer);
-  if (pingObject.identifier !== IDENTIFIER) {
+  if (pingObject.identifier !== IDENTIFIER || pingObject.type !== 0) {
     return;
   }
 
